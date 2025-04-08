@@ -1,3 +1,41 @@
+// Replace this with your actual Render backend URL
+const BACKEND_URL = "https://enigma-explorer.onrender.com";
+
+// Handle form submission
+document.getElementById("search-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const query = document.getElementById("search-input").value.trim();
+    if (!query) return;
+
+    const resultsContainer = document.getElementById("results");
+    resultsContainer.innerHTML = "<p>Searching...</p>";
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/search?q=${encodeURIComponent(query)}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            resultsContainer.innerHTML = "<p>No results or an error occurred.</p>";
+            return;
+        }
+
+        resultsContainer.innerHTML = data.map(result => `
+            <div class="result">
+                <a href="${result.url}" target="_blank">${result.title}</a>
+                <p>${result.description}</p>
+                <small>${result.url}</small>
+            </div>
+        `).join("");
+    } catch (error) {
+        console.error(error);
+        resultsContainer.innerHTML = "<p>Failed to fetch results.</p>";
+    }
+});
+
 // 🌠 Random Phrase Logic
 const phrases = [
   "Explore the universe of knowledge!",
@@ -17,17 +55,6 @@ const themeToggle = document.getElementById("theme-toggle");
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark");
   document.body.classList.toggle("light");
-});
-
-// 🔍 Search Submit (Basic behavior)
-document.getElementById("search-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const query = document.getElementById("search-input").value.trim();
-  const resultsBox = document.getElementById("results");
-  if (query) {
-    // You can replace this line with real search logic
-    resultsBox.innerHTML = `<p class="privacy">🔎 You searched for: <b>${query}</b></p>`;
-  }
 });
 
 // 🎤 Voice Search
