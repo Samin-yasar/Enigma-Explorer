@@ -1,40 +1,52 @@
 // Replace this with your actual Render backend URL
 const BACKEND_URL = "https://enigma-explorer.onrender.com";
 
-// Handle form submission
-document.getElementById("search-form").addEventListener("submit", async (e) => {
+// Handle search form submission
+document.getElementById("search-form").addEventListener("submit", function (e) {
     e.preventDefault();
-    
     const query = document.getElementById("search-input").value.trim();
-    if (!query) return;
-
-    const resultsContainer = document.getElementById("results");
-    resultsContainer.innerHTML = "<p>Searching...</p>";
-
-    try {
-        const response = await fetch(`${BACKEND_URL}/search?q=${encodeURIComponent(query)}`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-
-        if (!Array.isArray(data)) {
-            resultsContainer.innerHTML = "<p>No results or an error occurred.</p>";
-            return;
-        }
-
-        resultsContainer.innerHTML = data.map(result => `
-            <div class="result">
-                <a href="${result.url}" target="_blank">${result.title}</a>
-                <p>${result.description}</p>
-                <small>${result.url}</small>
-            </div>
-        `).join("");
-    } catch (error) {
-        console.error(error);
-        resultsContainer.innerHTML = "<p>Failed to fetch results.</p>";
+    if (query) {
+        fetchWhoogleSearch(query);
     }
 });
+
+// Fetch Whoogle Search results
+function fetchWhoogleSearch(query) {
+    const resultsBox = document.getElementById("results");
+    resultsBox.innerHTML = `<p>🔭 Searching the stars...</p>`;
+
+    const whoogleUrl = `https://your-whoogle-instance.com/search?q=${encodeURIComponent(query)}`;
+
+    fetch(whoogleUrl)
+        .then(res => res.text())
+        .then(data => {
+            // If you want to parse the HTML results returned from Whoogle, you can use DOMParser
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+            const results = doc.querySelectorAll('.result');
+
+            if (results.length > 0) {
+                resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
+                results.forEach(result => {
+                    const title = result.querySelector('.result__title').innerText;
+                    const link = result.querySelector('.result__url').href;
+                    const snippet = result.querySelector('.result__snippet').innerText;
+
+                    resultsBox.innerHTML += `
+                        <li>
+                            <a href="${link}" target="_blank">${title}</a>
+                            <p>${snippet}</p>
+                        </li>
+                    `;
+                });
+                resultsBox.innerHTML += `</ul>`;
+            } else {
+                resultsBox.innerHTML = `<p>❌ No results found. Try a different query.</p>`;
+            }
+        })
+        .catch(err => {
+            document.getElementById("results").innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
+        });
 
 // 🌠 Random Phrase Logic
 const phrases = [
