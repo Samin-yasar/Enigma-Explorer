@@ -1,0 +1,97 @@
+/* === General Layout === */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+}
+
+body.dark {
+  background: radial-gradient(circle at top left, #0c0c2c, #000000 80%);
+  color: #ffffff;
+}
+
+body.light {
+  background: linear-gradient(to bottom, #f0f8ff, #dbe9ff);
+  color: #111;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+.privacy, .random-phrase {
+  margin: 0.5rem 0;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* === Input & Buttons === */
+form {
+  margin-top: 1.5rem;
+}
+
+input[type="text"] {
+  padding: 0.8rem;
+  width: 80%;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button[type="submit"],
+#voice-btn {
+  background-color: #3399ff;
+  color: white;
+}
+
+#theme-toggle {
+  margin-top: 1.5rem;
+  background-color: #5555ff;
+  color: #fff;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+/* === Star Cursor Trail === */
+.star {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  box-shadow: 0 0 8px 2px #ffffffcc;
+  animation: fade 0.6s ease-out;
+}
+
+@keyframes fade {
+  from { opacity: 1; }
+  to { opacity: 0; transform: scale(1.5); }
+}
