@@ -124,4 +124,6 @@ document.addEventListener("mousemove", (e) => {
   setTimeout(() => {
     star.remove();
   }, 600);
-});  // <-- This closing parenthesis closes the 'addEventListener' function
+}); 
+    
+})();
