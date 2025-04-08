@@ -15,7 +15,7 @@ function fetchWhoogleSearch(query) {
     const resultsBox = document.getElementById("results");
     resultsBox.innerHTML = `<p>🔭 Searching the stars...</p>`;
 
-    const whoogleUrl = `https://your-whoogle-instance.com/search?q=${encodeURIComponent(query)}`;
+    const whoogleUrl = `https://enigma-explorer.onrender.com/search?q=${encodeURIComponent(query)}`;
 
     fetch(whoogleUrl)
         .then(res => res.text())
@@ -99,13 +99,29 @@ if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
   voiceBtn.disabled = true;
 }
 
-// 🌌 Star Cursor Effect
+// 🌌 Star Cursor Effect with Cleanup
+const MAX_STARS = 50; // Max number of stars allowed at any given time
+let stars = [];
+
 document.addEventListener("mousemove", (e) => {
+  // Check if the number of stars exceeds the max limit
+  if (stars.length >= MAX_STARS) {
+    const firstStar = stars.shift(); // Remove the oldest star
+    firstStar.remove(); // Clean up the DOM
+  }
+
+  // Create a new star at the mouse position
   const star = document.createElement("div");
   star.className = "star";
   star.style.left = `${e.clientX}px`;
   star.style.top = `${e.clientY}px`;
   document.body.appendChild(star);
-  setTimeout(() => star.remove(), 600);
+
+  // Store the star for cleanup
+  stars.push(star);
+
+  // Remove the star after 600ms
+  setTimeout(() => {
+    star.remove();
+  }, 600);
 });
-}
