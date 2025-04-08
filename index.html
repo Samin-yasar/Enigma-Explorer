@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> Enigma Explorer</title>
+  <link rel="stylesheet" href="/Enigma-Explorer/style.css" />
+</head>
+<body class="dark">
+  <div class="container">
+    <h1>Enigma Explorer</h1>
+    <p class="privacy">🔒 Your searches are private and never tracked.</p>
+
+    <p id="random-phrase" class="random-phrase"></p>
+
+    <form id="search-form">
+      <input id="search-input" type="text" placeholder="Search privately..." required />
+      <div class="btn-group">
+        <button type="submit">Search</button>
+        <button type="button" id="voice-btn" title="Voice Search">&#127908;</button>
+      </div>
+    </form>
+
+    <p id="voice-status" class="privacy"></p>
+    <button id="theme-toggle">Toggle Light/Dark</button>
+
+    <div id="results"></div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
