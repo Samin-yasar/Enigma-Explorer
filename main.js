@@ -1,4 +1,4 @@
-// Replace this with your actual Render backend URL
+// Rackend URL
 const BACKEND_URL = "https://enigma-explorer.onrender.com";
 
 // Handle search form submission
@@ -12,20 +12,44 @@ function handleSearchFormSubmit(e) {
     }
 }
 
-// Fetch Whoogle Search results
-async function fetchWhoogleSearch(query) {
+//Fetch search result
+function fetchWhoogleSearch(query) {
     const resultsBox = document.getElementById("results");
     resultsBox.innerHTML = `<p>🔭 Searching the stars...</p>`;
 
-    const whoogleUrl = `${BACKEND_URL}/search?q=${encodeURIComponent(query)}`;
+    const proxyUrl = 'https://corsproxy.io/?';
+    const whoogleUrl = `https://enigma-explorer.onrender.com/search?q=${encodeURIComponent(query)}`;
+    const url = proxyUrl + encodeURIComponent(whoogleUrl);
 
-    try {
-        const res = await fetch(whoogleUrl);
-        const data = await res.text();
-        displaySearchResults(data);
-    } catch (err) {
-        displayError(err.message);
-    }
+    fetch(url)
+        .then(res => res.text())
+        .then(data => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+            const results = doc.querySelectorAll('.result');
+
+            if (results.length > 0) {
+                resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
+                results.forEach(result => {
+                    const title = result.querySelector('.result__title')?.innerText || 'No title';
+                    const link = result.querySelector('.result__url')?.href || '#';
+                    const snippet = result.querySelector('.result__snippet')?.innerText || '';
+
+                    resultsBox.innerHTML += `
+                        <li>
+                            <a href="${link}" target="_blank">${title}</a>
+                            <p>${snippet}</p>
+                        </li>
+                    `;
+                });
+                resultsBox.innerHTML += `</ul>`;
+            } else {
+                resultsBox.innerHTML = `<p>❌ No results found. Try a different query.</p>`;
+            }
+        })
+        .catch(err => {
+            resultsBox.innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
+        });
 }
 
 function displaySearchResults(data) {
