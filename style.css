@@ -1,4 +1,4 @@
-/* Reset and full-screen setup */
+/* Reset and setup */
 *, *:before, *:after {
   margin: 0;
   padding: 0;
@@ -12,23 +12,28 @@ html, body {
   color: #e5e7eb;
 }
 
-/* Dark gradient background */
-body {
+body.dark {
   background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 100%);
   position: relative;
   isolation: isolate;
 }
 
-/* Star field container */
-.star-field {
+/* Universe container */
+#universe {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: -1; /* Behind content */
+  z-index: -1;
 }
 
-/* Twinkling stars */
-.star-field .star {
+/* Star layers */
+.stars, .stars2, .stars3 {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+.stars .star, .stars2 .star, .stars3 .star {
   position: absolute;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
@@ -36,26 +41,27 @@ body {
   animation: twinkle 2.5s ease-in-out infinite;
 }
 
+.stars .star { animation-duration: 2s; }
+.stars2 .star { animation-duration: 3s; opacity: 0.7; }
+.stars3 .star { animation-duration: 4s; opacity: 0.5; }
+
 @keyframes twinkle {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
 
-/* Cursor trail stars (from your JS) */
-.star {
+/* Nebula */
+.nebula {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-  pointer-events: auto; /* For sound hover */
-  transition: opacity 0.6s ease-out;
-  opacity: 1;
+  inset: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(147, 51, 234, 0.3) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%);
+  filter: blur(60px);
+  animation: nebula-shift 25s ease-in-out infinite;
 }
 
-.star:hover {
-  opacity: 0.7;
+@keyframes nebula-shift {
+  0%, 100% { transform: translate(-10%, -10%) scale(1.05); }
+  50% { transform: translate(10%, 10%) scale(1); }
 }
 
 /* Shooting star */
@@ -73,7 +79,7 @@ body {
   100% { transform: translateX(120vw) translateY(120vh) rotate(45deg); opacity: 0; }
 }
 
-/* Asteroid belt */
+/* Asteroid (added dynamically via JS) */
 .asteroid {
   position: absolute;
   background: radial-gradient(circle, #6b7280, #4b5563);
@@ -92,46 +98,49 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Nebula effect */
-.nebula {
+/* Cursor trail stars */
+.star {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 70%, rgba(147, 51, 234, 0.3) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%);
-  filter: blur(60px);
-  animation: nebula-shift 25s ease-in-out infinite;
-  z-index: -2;
-}
-
-@keyframes nebula-shift {
-  0%, 100% { transform: translate(-10%, -10%) scale(1.05); }
-  50% { transform: translate(10%, 10%) scale(1); }
-}
-
-/* Moon */
-.moon {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle at 70% 70%, #f3f4f6 30%, #d1d5db 70%);
+  width: 4px;
+  height: 4px;
+  background: white;
   border-radius: 50%;
-  top: 15%;
-  right: 15%;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-  animation: pulse 10s infinite ease-in-out;
-  z-index: 0;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  pointer-events: auto;
+  transition: opacity 0.6s ease-out;
+  opacity: 1;
 }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); }
-  50% { box-shadow: 0 0 35px rgba(255, 255, 255, 0.6); }
+.star:hover {
+  opacity: 0.7;
 }
 
-/* Search form styling */
-#search-form {
+/* Main content */
+.container {
   position: relative;
   z-index: 10;
   padding: 20px;
   text-align: center;
+}
+
+h1 {
+  color: #93c5fd;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+#random-phrase {
+  color: #93c5fd;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+/* Search form */
+#search-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 #search-input {
@@ -151,11 +160,51 @@ body {
   border-color: #60a5fa;
 }
 
-/* Results box */
+#search-form button {
+  padding: 10px 20px;
+  border: none;
+  background: #60a5fa;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#search-form button:hover {
+  background: #3b82f6;
+}
+
+/* Advanced options */
+#toggle-advanced {
+  background: transparent;
+  border: 1px solid #93c5fd;
+  color: #93c5fd;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+#advanced-fields {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#advanced-fields input {
+  padding: 8px;
+  width: 150px;
+  border: 1px solid #93c5fd;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  outline: none;
+}
+
+/* Results */
 #results {
-  position: relative;
-  z-index: 10;
-  padding: 20px;
   max-width: 800px;
   margin: 0 auto;
   text-align: left;
@@ -192,25 +241,12 @@ body {
   font-size: 14px;
 }
 
-/* Random phrase */
-#random-phrase {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  color: #93c5fd;
-  font-style: italic;
-  text-align: center;
-}
-
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   #search-input {
     width: 90%;
   }
-  .moon {
-    width: 50px;
-    height: 50px;
+  #advanced-fields input {
+    width: 100%;
   }
 }
