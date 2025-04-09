@@ -4,7 +4,7 @@ const BACKEND_URL = "https://enigma-explorer.onrender.com";
 document.getElementById("search-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const query = document.getElementById("search-input").value.trim();
-  if (query) fetchWhoogleSearch(query);
+  if (query) fetchWhoogleSearch(query);  // Ensure this function is available when triggered
 });
 
 function fetchWhoogleSearch(query) {
@@ -20,8 +20,8 @@ function fetchWhoogleSearch(query) {
     if (value) params.append(id, value);
   });
 
-  // Define the proxy URL
-  const proxyURL = `https://corsproxy.io/?url=${encodeURIComponent("https://enigma-explorer.onrender.com/search?")}${params.toString()}`;
+  // Define the proxy URL here to avoid the ReferenceError
+  const proxyURL = `https://corsproxy.io/?url=${encodeURIComponent(BACKEND_URL + "/search?")}${params.toString()}`;
 
   // Fetch data through the proxy
   fetch(proxyURL)
