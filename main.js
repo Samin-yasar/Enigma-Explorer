@@ -1,3 +1,5 @@
+const BACKEND_URL = "https://enigma-explorer.onrender.com";
+
 // Search form submission
 document.getElementById("search-form").addEventListener("submit", function (e) {
   e.preventDefault();
@@ -5,40 +7,59 @@ document.getElementById("search-form").addEventListener("submit", function (e) {
   if (query) fetchWhoogleSearch(query);
 });
 
-fetch(proxyURL)
-  .then(res => res.text())
-  .then(data => {
-    console.log("🔍 Raw HTML:", data); // 👈 Add this for debugging
-    
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(data, 'text/html');
+function fetchWhoogleSearch(query) {
+  const resultsBox = document.getElementById("results");
+  resultsBox.innerHTML = `<p>🔭 Searching the stars...</p>`;
 
-    const results = doc.querySelectorAll('.result');
-    console.log("🧪 Parsed results:", results); // 👈 Add this too
+  const params = new URLSearchParams();
+  params.append("q", query);
 
-    if (results.length > 0) {
-      resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
-      results.forEach(result => {
-        const title = result.querySelector('.result__title')?.innerText || "No title";
-        const link = result.querySelector('.result__url')?.href || "#";
-        const snippet = result.querySelector('.result__snippet')?.innerText || "";
-
-        resultsBox.innerHTML += `
-          <li>
-            <a href="${link}" target="_blank">${title}</a>
-            <p>${snippet}</p>
-          </li>
-        `;
-      });
-      resultsBox.innerHTML += `</ul>`;
-    } else {
-      resultsBox.innerHTML = `<p>❌ No results found. Try a different query.</p>`;
-    }
-  })
-  .catch(err => {
-    resultsBox.innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
+  // Add optional fields
+  ["gl", "tbs", "hl", "lr", "near"].forEach(id => {
+    const value = document.getElementById(id)?.value.trim();
+    if (value) params.append(id, value);
   });
 
+  // Define the proxy URL
+  const proxyURL = `https://corsproxy.io/?url=${encodeURIComponent("https://enigma-explorer.onrender.com/search?")}${params.toString()}`;
+
+  // Fetch data through the proxy
+  fetch(proxyURL)
+    .then(res => res.text())
+    .then(data => {
+      console.log("🔍 Raw HTML:", data); // Debug log for raw HTML
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data, 'text/html');
+
+      // Use appropriate selector here after checking the raw HTML structure
+      const results = doc.querySelectorAll('.result'); // Modify this if the structure changes
+
+      console.log("🧪 Parsed results:", results); // Debug log to check if results are properly parsed
+
+      if (results.length > 0) {
+        resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
+        results.forEach(result => {
+          const title = result.querySelector('.result__title')?.innerText || "No title";
+          const link = result.querySelector('.result__url')?.href || "#";
+          const snippet = result.querySelector('.result__snippet')?.innerText || "";
+
+          resultsBox.innerHTML += `
+            <li>
+              <a href="${link}" target="_blank">${title}</a>
+              <p>${snippet}</p>
+            </li>
+          `;
+        });
+        resultsBox.innerHTML += `</ul>`;
+      } else {
+        resultsBox.innerHTML = `<p>❌ No results found. Try a different query.</p>`;
+      }
+    })
+    .catch(err => {
+      resultsBox.innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
+    });
+}
 
 // Random phrase
 const phrases = [
@@ -51,7 +72,8 @@ const phrases = [
   "Discover More, Worry Less.",
   "Search Without Compromise.",
   "Find What You Need, Keep What You Want Private.",
-  "Your Queries, Your Privacy."
+  "Your Queries, Your Privacy.",
+  "Your Secrets, Our Mission: Enigma Explorer"
 ];
 document.getElementById("random-phrase").textContent =
   phrases[Math.floor(Math.random() * phrases.length)];
