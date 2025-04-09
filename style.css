@@ -13,7 +13,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: transparent url('https://raw.githubusercontent.com/samin-yasar/space-assets/main/stars1.png') repeat;
+  background: transparent url('https://github.com/Samin-yasar/Enigma-Explorer/blob/e572acf885b9fc506a1d743c1a1c23ed359fcd6f/star1.jpg') repeat;
   animation: moveStars 100s linear infinite;
 }
 .stars2 {
