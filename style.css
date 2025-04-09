@@ -1,182 +1,216 @@
-/* Fonts */
-body {
+/* Reset and full-screen setup */
+*, *:before, *:after {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  overflow-x: hidden;
-  background: radial-gradient(ellipse at bottom, #0d1a2f 0%, #000000 100%);
-  color: white;
-  cursor: none;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Star field */
-.stars, .stars2, .stars3 {
-  position: absolute;
-  width: 100%;
+html, body {
   height: 100%;
-  background: transparent url('https://github.com/Samin-yasar/Enigma-Explorer/blob/e572acf885b9fc506a1d743c1a1c23ed359fcd6f/star1.jpg') repeat;
-  animation: moveStars 100s linear infinite;
-}
-.stars2 {
-  background-image: url('https://raw.githubusercontent.com/samin-yasar/space-assets/main/stars2.png');
-  animation-duration: 150s;
-}
-.stars3 {
-  background-image: url('https://raw.githubusercontent.com/samin-yasar/space-assets/main/stars3.png');
-  animation-duration: 200s;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: #e5e7eb;
 }
 
-@keyframes moveStars {
-  from { transform: translateY(0); }
-  to { transform: translateY(-1000px); }
+/* Dark gradient background */
+body {
+  background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 100%);
+  position: relative;
+  isolation: isolate;
 }
 
-/* Nebula Effect */
-.nebula {
+/* Star field container */
+.star-field {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 50% 50%, #442266aa, transparent 70%);
-  filter: blur(120px);
-  animation: nebulaPulse 30s ease-in-out infinite;
-  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1; /* Behind content */
 }
 
-@keyframes nebulaPulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.9; }
+/* Twinkling stars */
+.star-field .star {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  will-change: opacity;
+  animation: twinkle 2.5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Cursor trail stars (from your JS) */
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  pointer-events: auto; /* For sound hover */
+  transition: opacity 0.6s ease-out;
+  opacity: 1;
+}
+
+.star:hover {
+  opacity: 0.7;
 }
 
 /* Shooting star */
 .shooting-star {
   position: absolute;
-  width: 3px;
-  height: 80px;
-  background: white;
-  top: -100px;
-  left: 0;
-  opacity: 0;
-  transform: rotate(45deg);
-  animation: shoot 10s ease-in-out infinite;
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, white, transparent);
+  transform-origin: center;
+  animation: shoot 3s cubic-bezier(0.25, 0.1, 0.75, 0.2) infinite;
 }
 
 @keyframes shoot {
-  0% {
-    top: -100px;
-    left: -100px;
-    opacity: 0;
-  }
-  10% {
-    top: 30%;
-    left: 30%;
-    opacity: 1;
-  }
-  100% {
-    top: 80%;
-    left: 80%;
-    opacity: 0;
-  }
+  0% { transform: translateX(-20vw) translateY(-20vh) rotate(45deg); opacity: 1; }
+  100% { transform: translateX(120vw) translateY(120vh) rotate(45deg); opacity: 0; }
 }
 
-/* Main container */
-.container {
-  position: relative;
-  z-index: 5;
-  text-align: center;
-  padding: 2rem;
+/* Asteroid belt */
+.asteroid {
+  position: absolute;
+  background: radial-gradient(circle, #6b7280, #4b5563);
+  border-radius: 50%;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.7);
+  animation: drift 15s linear infinite, spin 10s linear infinite;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.2rem;
+@keyframes drift {
+  0% { transform: translateX(-20vw); }
+  100% { transform: translateX(120vw); }
 }
 
-#random-phrase {
-  font-style: italic;
-  margin-bottom: 2rem;
-  color: #9ac1ff;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Search */
+/* Nebula effect */
+.nebula {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(147, 51, 234, 0.3) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%);
+  filter: blur(60px);
+  animation: nebula-shift 25s ease-in-out infinite;
+  z-index: -2;
+}
+
+@keyframes nebula-shift {
+  0%, 100% { transform: translate(-10%, -10%) scale(1.05); }
+  50% { transform: translate(10%, 10%) scale(1); }
+}
+
+/* Moon */
+.moon {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at 70% 70%, #f3f4f6 30%, #d1d5db 70%);
+  border-radius: 50%;
+  top: 15%;
+  right: 15%;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+  animation: pulse 10s infinite ease-in-out;
+  z-index: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); }
+  50% { box-shadow: 0 0 35px rgba(255, 255, 255, 0.6); }
+}
+
+/* Search form styling */
 #search-form {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 1rem;
+  position: relative;
+  z-index: 10;
+  padding: 20px;
+  text-align: center;
 }
 
 #search-input {
-  padding: 10px;
-  font-size: 1.2rem;
-  width: 60%;
-  border-radius: 12px;
-  border: none;
-  outline: none;
-  background-color: #1a1a2f;
-  color: white;
-}
-
-button {
-  background: #3f51b5;
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: #5c6bc0;
-}
-
-/* Advanced */
-#advanced-fields {
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-  margin: 1rem auto;
-  width: 60%;
-  animation: fadeIn 0.5s ease forwards;
-}
-
-#advanced-fields.expanded {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scaleY(0); }
-  to { opacity: 1; transform: scaleY(1); }
-}
-
-/* Theme toggle */
-.toggle-theme {
-  margin-top: 20px;
-  font-size: 0.9rem;
-}
-
-/* Results */
-#results {
-  margin-top: 2rem;
-  text-align: left;
+  padding: 10px 15px;
   width: 70%;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 500px;
+  border: 2px solid #93c5fd;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
-/* Star cursor */
-.star {
+#search-input:focus {
+  border-color: #60a5fa;
+}
+
+/* Results box */
+#results {
+  position: relative;
+  z-index: 10;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#results h3 {
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+
+#results ul {
+  list-style: none;
+}
+
+#results li {
+  margin: 15px 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+#results a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#results a:hover {
+  text-decoration: underline;
+}
+
+#results p {
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+/* Random phrase */
+#random-phrase {
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: white;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.8;
-  animation: twinkle 0.6s ease-out forwards;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  color: #93c5fd;
+  font-style: italic;
+  text-align: center;
 }
 
-@keyframes twinkle {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(0.2); opacity: 0; }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #search-input {
+    width: 90%;
+  }
+  .moon {
+    width: 50px;
+    height: 50px;
+  }
 }
