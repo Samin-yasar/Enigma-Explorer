@@ -1,5 +1,5 @@
 const DUCKDUCKGO_API = "https://api.duckduckgo.com/";
-const BRAVE_API_KEY = "BSACWggEoT6fY5A1zTU9bPjtzCQX40A"; 
+const BRAVE_API_KEY = "BSACWggEoT6fY5A1zTU9bPjtzCQX40A"; // Replace with your Brave API key
 const BRAVE_API = "https://api.search.brave.com/res/v1/web/search";
 
 // Search form submission
@@ -14,25 +14,22 @@ function fetchSearch(query) {
   resultsBox.innerHTML = `<p>🔭 Searching the stars...</p>`;
 
   const params = new URLSearchParams({ q: query, format: "json", no_html: 1 });
-  ["gl", "tbs", "hl", "lr", "near"].forEach(id => {
+  ["gl", "hl", "lr", "near", "tbs"].forEach(id => {
     const value = document.getElementById(id)?.value.trim();
     if (value) params.append(id, value);
   });
 
-  // Step 1: Try DuckDuckGo Instant Answer API
   fetch(`${DUCKDUCKGO_API}?${params.toString()}`)
     .then(res => res.json())
     .then(data => {
       if (data.Results && data.Results.length > 0) {
         displayResults(data.Results, resultsBox);
       } else {
-        // Fallback to Brave API if DuckDuckGo returns no results
         fetchBraveSearch(query, resultsBox);
       }
     })
     .catch(err => {
       console.error("DuckDuckGo failed:", err);
-      // Fallback to Brave API on error
       fetchBraveSearch(query, resultsBox);
     });
 }
@@ -89,7 +86,7 @@ const phrases = [
 document.getElementById("random-phrase").textContent =
   phrases[Math.floor(Math.random() * phrases.length)];
 
-// 🌠 Star Cursor Trail
+// Star cursor trail
 const MAX_STARS = 50;
 let stars = [];
 
@@ -110,7 +107,7 @@ document.addEventListener("mousemove", (e) => {
   }, 600);
 });
 
-// 🎧 Sound effect on star hover
+// Sound effect on star hover
 document.body.addEventListener("mouseover", (e) => {
   if (e.target.classList.contains("star")) {
     const audio = document.getElementById("space-sound");
@@ -121,27 +118,43 @@ document.body.addEventListener("mouseover", (e) => {
   }
 });
 
-// Spawn cosmic background elements
-function spawnCosmicElements() {
-  const starField = document.querySelector(".star-field");
-  for (let i = 0; i < 100; i++) {
-    const star = document.createElement("div");
-    star.className = "star " + (i % 2 ? "foreground" : "background");
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.top = Math.random() * 100 + "vh";
-    star.style.width = star.style.height = Math.random() * 3 + "px";
-    star.style.animationDelay = Math.random() * 2 + "s";
-    starField.appendChild(star);
-  }
+// Toggle advanced fields
+document.getElementById("toggle-advanced").addEventListener("click", () => {
+  const advancedFields = document.getElementById("advanced-fields");
+  const isVisible = advancedFields.style.display === "flex";
+  advancedFields.style.display = isVisible ? "none" : "flex";
+  document.getElementById("toggle-advanced").textContent = isVisible ? "Advanced Options ↓" : "Advanced Options ↑";
+});
 
-  for (let i = 0; i < 3; i++) {
+// Spawn cosmic elements
+function spawnCosmicElements() {
+  const universe = document.getElementById("universe");
+  
+  // Stars across layers
+  const layers = [".stars", ".stars2", ".stars3"];
+  layers.forEach((selector, index) => {
+    const layer = document.querySelector(selector);
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.width = star.style.height = (Math.random() * 2 + 1) + "px";
+      star.style.animationDelay = Math.random() * 2 + "s";
+      layer.appendChild(star);
+    }
+  });
+
+  // Additional shooting stars
+  for (let i = 0; i < 2; i++) {
     const shootingStar = document.createElement("div");
     shootingStar.className = "shooting-star";
     shootingStar.style.top = Math.random() * 20 + "vh";
     shootingStar.style.animationDelay = Math.random() * 5 + "s";
-    starField.appendChild(shootingStar);
+    universe.appendChild(shootingStar);
   }
 
+  // Asteroids
   for (let i = 0; i < 5; i++) {
     const asteroid = document.createElement("div");
     asteroid.className = "asteroid";
@@ -149,7 +162,7 @@ function spawnCosmicElements() {
     asteroid.style.top = Math.random() * 80 + 10 + "vh";
     asteroid.style.animationDuration = (Math.random() * 10 + 10) + "s";
     asteroid.style.animationDelay = Math.random() * 5 + "s";
-    starField.appendChild(asteroid);
+    universe.appendChild(asteroid);
   }
 }
 
