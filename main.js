@@ -5,56 +5,40 @@ document.getElementById("search-form").addEventListener("submit", function (e) {
   if (query) fetchWhoogleSearch(query);
 });
 
-function fetchWhoogleSearch(query) {
-  const resultsBox = document.getElementById("results");
-  resultsBox.innerHTML = `<p>🔭 Searching the stars...</p>`;
+fetch(proxyURL)
+  .then(res => res.text())
+  .then(data => {
+    console.log("🔍 Raw HTML:", data); // 👈 Add this for debugging
+    
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data, 'text/html');
 
-  const params = new URLSearchParams();
-  params.append("q", query);
+    const results = doc.querySelectorAll('.result');
+    console.log("🧪 Parsed results:", results); // 👈 Add this too
 
-  // Add optional fields
-  ["gl", "tbs", "hl", "lr", "near"].forEach(id => {
-    const value = document.getElementById(id)?.value.trim();
-    if (value) params.append(id, value);
+    if (results.length > 0) {
+      resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
+      results.forEach(result => {
+        const title = result.querySelector('.result__title')?.innerText || "No title";
+        const link = result.querySelector('.result__url')?.href || "#";
+        const snippet = result.querySelector('.result__snippet')?.innerText || "";
+
+        resultsBox.innerHTML += `
+          <li>
+            <a href="${link}" target="_blank">${title}</a>
+            <p>${snippet}</p>
+          </li>
+        `;
+      });
+      resultsBox.innerHTML += `</ul>`;
+    } else {
+      resultsBox.innerHTML = `<p>❌ No results found. Try a different query.</p>`;
+    }
+  })
+  .catch(err => {
+    resultsBox.innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
   });
 
-  // The target search URL (without proxy)
-  const targetURL = `https://enigma-explorer.onrender.com/search?${params.toString()}`;
-
-  // Wrapped with CORS proxy
-  const proxyURL = `https://corsproxy.io/?url=${encodeURIComponent(targetURL)}`;
-
-  // Fetch results using the proxy URL
-  fetch(proxyURL)
-    .then(res => res.text())
-    .then(data => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(data, 'text/html');
-      const results = doc.querySelectorAll('.result');
-
-      if (results.length > 0) {
-        resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
-        results.forEach(result => {
-          const title = result.querySelector('.result__title')?.innerText || "No title";
-          const link = result.querySelector('.result__url')?.href || "#";
-          const snippet = result.querySelector('.result__snippet')?.innerText || "";
-
-          resultsBox.innerHTML += `
-            <li>
-              <a href="${link}" target="_blank">${title}</a>
-              <p>${snippet}</p>
-            </li>
-          `;
-        });
-        resultsBox.innerHTML += `</ul>`;
-      } else {
-        resultsBox.innerHTML = `<p>❌ No results found. Try a different query.</p>`;
-      }
-    })
-    .catch(err => {
-      resultsBox.innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
-    });
-}
 
 // Random phrase
 const phrases = [
