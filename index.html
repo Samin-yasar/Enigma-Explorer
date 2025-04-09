@@ -6,26 +6,51 @@
   <title> Enigma Explorer</title>
   <link rel="stylesheet" href="/Enigma-Explorer/style.css" />
 </head>
-<body class="dark">
-  <div class="container">
-    <h1>Enigma Explorer</h1>
-    <p class="privacy">🔒 Your searches are private and never tracked.</p>
+<body class="light">
 
-    <p id="random-phrase" class="random-phrase"></p>
+  <h1> Enigma Explorer</h1>
+  <p id="random-phrase"></p>
 
-    <form id="search-form">
-      <input id="search-input" type="text" placeholder="Search privately..." required />
-      <div class="btn-group">
-        <button type="submit">Search</button>
-        <button type="button" id="voice-btn" title="Voice Search">&#127908;</button>
+  <form id="search-form">
+    <label>
+      Search: <input type="text" id="search-input" required>
+    </label>
+
+    <button type="button" id="toggle-advanced">Advanced Options ↓</button>
+
+    <div id="advanced-fields" class="collapsed">
+      <div class="flex-group">
+        <label>Country: <input type="text" id="gl" placeholder="us, bd, in..."></label>
+        <label>Time Period:
+          <select id="tbs">
+            <option value="">Any</option>
+            <option value="qdr:d">Past Day</option>
+            <option value="qdr:w">Past Week</option>
+            <option value="qdr:m">Past Month</option>
+            <option value="qdr:y">Past Year</option>
+          </select>
+        </label>
       </div>
-    </form>
+      <label>Interface Language: <input type="text" id="hl" placeholder="en, bn..."></label>
+      <label>Search Language: <input type="text" id="lr"></label>
+      <label>Near (City): <input type="text" id="near"></label>
+    </div>
 
+    <button type="submit">Search</button>
+  </form>
+  <div id="theme-toggle-wrapper">
+    <span>&#9728;</span>
+    <label class="switch">
+      <input type="checkbox" id="theme-toggle">
+      <span class="slider round"></span>
+    </label>
+    <span>&#9790;</span>
+  </div>
+ 
     <p id="voice-status" class="privacy"></p>
     <button id="theme-toggle">Toggle Light/Dark</button>
 
     <div id="results"></div>
-  </div>
 
   <script src="https://samin-yasar.github.io/Enigma-Explorer/main.js"></script>
 </body>
