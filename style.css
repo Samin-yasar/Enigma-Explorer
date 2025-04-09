@@ -1,174 +1,182 @@
-/* Default Theme (Dark Mode) */
+/* Fonts */
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #0c0f24;
-  color: #f5f5f5;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-  cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1064.cur'), auto;
+  font-family: "Segoe UI", sans-serif;
+  overflow-x: hidden;
+  background: radial-gradient(ellipse at bottom, #0d1a2f 0%, #000000 100%);
+  color: white;
+  cursor: none;
 }
 
-body.light {
-  background-color: #ffffff;
-  color: #111;
-  background-image: none;
+/* Star field */
+.stars, .stars2, .stars3 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent url('https://raw.githubusercontent.com/samin-yasar/space-assets/main/stars1.png') repeat;
+  animation: moveStars 100s linear infinite;
+}
+.stars2 {
+  background-image: url('https://raw.githubusercontent.com/samin-yasar/space-assets/main/stars2.png');
+  animation-duration: 150s;
+}
+.stars3 {
+  background-image: url('https://raw.githubusercontent.com/samin-yasar/space-assets/main/stars3.png');
+  animation-duration: 200s;
 }
 
+@keyframes moveStars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-1000px); }
+}
+
+/* Nebula Effect */
+.nebula {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, #442266aa, transparent 70%);
+  filter: blur(120px);
+  animation: nebulaPulse 30s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes nebulaPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+/* Shooting star */
+.shooting-star {
+  position: absolute;
+  width: 3px;
+  height: 80px;
+  background: white;
+  top: -100px;
+  left: 0;
+  opacity: 0;
+  transform: rotate(45deg);
+  animation: shoot 10s ease-in-out infinite;
+}
+
+@keyframes shoot {
+  0% {
+    top: -100px;
+    left: -100px;
+    opacity: 0;
+  }
+  10% {
+    top: 30%;
+    left: 30%;
+    opacity: 1;
+  }
+  100% {
+    top: 80%;
+    left: 80%;
+    opacity: 0;
+  }
+}
+
+/* Main container */
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
+  position: relative;
+  z-index: 5;
   text-align: center;
+  padding: 2rem;
 }
 
 h1 {
   font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: #ffd700;
-  text-shadow: 0 0 10px #fff;
-}
-
-#search-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-#search-input {
-  width: 100%;
-  max-width: 500px;
-  padding: 0.75rem 1rem;
-  font-size: 1.1rem;
-  border-radius: 10px;
-  border: none;
-  background-color: #1a1c3a;
-  color: #f5f5f5;
-  box-shadow: 0 0 8px #3d3f66;
-}
-
-#search-input:focus {
-  outline: none;
-  box-shadow: 0 0 12px #ffd700;
-}
-
-button, input[type="submit"] {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  background-color: #ffd700;
-  color: #0c0f24;
-  transition: background-color 0.2s ease;
-}
-
-button:hover {
-  background-color: #e5c100;
-}
-
-#theme-toggle {
-  margin-left: 0.5rem;
-}
-
-.toggle-switch {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-#advanced-fields {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease;
-  opacity: 0;
-}
-
-#advanced-fields.expanded {
-  max-height: 800px; /* enough to show full form */
-  opacity: 1;
-}
-
-.advanced-option {
-  margin-bottom: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-label {
-  font-size: 0.9rem;
-  margin-bottom: 0.3rem;
-  color: #aaa;
-}
-
-input[type="text"], select {
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: none;
-  background-color: #1a1c3a;
-  color: #f5f5f5;
-  width: 100%;
-  max-width: 400px;
-}
-
-#results {
-  margin-top: 2rem;
-  text-align: left;
-}
-
-#results ul {
-  list-style: none;
-  padding: 0;
-}
-
-#results li {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #333;
-}
-
-#results a {
-  color: #87cefa;
-  font-size: 1.2rem;
-  text-decoration: none;
-}
-
-#results p {
-  margin-top: 0.3rem;
-  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
 }
 
 #random-phrase {
   font-style: italic;
-  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #9ac1ff;
+}
+
+/* Search */
+#search-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   margin-bottom: 1rem;
-  color: #999;
 }
 
-#voice-status {
+#search-input {
+  padding: 10px;
+  font-size: 1.2rem;
+  width: 60%;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background-color: #1a1a2f;
+  color: white;
+}
+
+button {
+  background: #3f51b5;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #5c6bc0;
+}
+
+/* Advanced */
+#advanced-fields {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  margin: 1rem auto;
+  width: 60%;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+#advanced-fields.expanded {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scaleY(0); }
+  to { opacity: 1; transform: scaleY(1); }
+}
+
+/* Theme toggle */
+.toggle-theme {
+  margin-top: 20px;
   font-size: 0.9rem;
-  color: #66c;
-  margin-top: 0.5rem;
 }
 
-footer {
+/* Results */
+#results {
   margin-top: 2rem;
-  font-size: 0.8rem;
-  color: #888;
-  text-align: center;
+  text-align: left;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-@media (max-width: 600px) {
-  #search-input {
-    font-size: 1rem;
-  }
+/* Star cursor */
+.star {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: twinkle 0.6s ease-out forwards;
+}
 
-  button {
-    font-size: 0.9rem;
-  }
+@keyframes twinkle {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.2); opacity: 0; }
 }
