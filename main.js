@@ -26,7 +26,11 @@ function fetchWhoogleSearch(query) {
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
+
+            console.log("[DEBUG] Full HTML:", doc.documentElement.innerHTML); // 🧪 Inspect here
+
             const results = doc.querySelectorAll('.result');
+            console.log("[DEBUG] Number of results:", results.length);
 
             if (results.length > 0) {
                 resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
