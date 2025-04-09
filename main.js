@@ -1,5 +1,5 @@
-const BACKEND_URL = "https://enigma-explorer.onrender.com";
-const CORS_PROXY = "https://corsproxy.io/?"; // Free CORS proxy
+
+const BACKEND_URL = "https://corsproxy.io/?https://enigma-explorer.onrender.com";
 
 // Search form submission
 document.getElementById("search-form").addEventListener("submit", function (e) {
@@ -21,18 +21,14 @@ function fetchWhoogleSearch(query) {
     if (value) params.append(id, value);
   });
 
-  const targetUrl = `${BACKEND_URL}/search?${params.toString()}`;
-  const proxyUrl = `${CORS_PROXY}${encodeURIComponent(targetUrl)}`;
+  const url = `${BACKEND_URL}/search?${params.toString()}`;
 
-  fetch(proxyUrl)
+  fetch(url)
     .then(res => res.text())
     .then(data => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(data, 'text/html');
-
       const results = doc.querySelectorAll('.result');
-
-      console.log("[DEBUG] Total Results Found:", results.length);
 
       if (results.length > 0) {
         resultsBox.innerHTML = `<h3>Search Results:</h3><ul>`;
@@ -56,8 +52,7 @@ function fetchWhoogleSearch(query) {
     .catch(err => {
       resultsBox.innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
     });
-}
-
+  
 // Advanced toggle
 document.getElementById("toggle-advanced").addEventListener("click", () => {
   const advanced = document.getElementById("advanced-fields");
@@ -84,7 +79,6 @@ window.addEventListener("DOMContentLoaded", () => {
     themeToggle.checked = saved === "dark";
   } else {
     document.body.classList.add("light");
-  }
 
   // Random phrase
   const phrases = [
@@ -123,7 +117,9 @@ if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
   recognition.onerror = () => {
     voiceStatus.textContent = "❌ Voice search failed.";
   };
-} else {
+} 
+else {
   voiceStatus.textContent = "⚠️ Voice search not supported on this browser.";
   voiceBtn.disabled = true;
+  }
 }
