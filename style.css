@@ -1,97 +1,130 @@
-/* === General Layout === */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  transition: background 0.3s, color 0.3s;
-  overflow-x: hidden;
+  font-family: sans-serif;
+  padding: 1rem;
+  transition: background 0.4s, color 0.4s;
 }
-
-body.dark {
-  background: radial-gradient(circle at top left, #0c0c2c, #000000 80%);
-  color: #ffffff;
-}
-
 body.light {
-  background: linear-gradient(to bottom, #f0f8ff, #dbe9ff);
+  background: #f0f0f0;
   color: #111;
 }
-
-.container {
-  max-width: 600px;
-  margin: auto;
-  padding: 2rem;
-  text-align: center;
+body.dark {
+  background: #121212;
+  color: #f8f8f8;
 }
 
-h1 {
-  font-size: 2.5rem;
-}
-
-.privacy, .random-phrase {
-  margin: 0.5rem 0;
-  font-style: italic;
-  font-size: 0.95rem;
-}
-
-/* === Input & Buttons === */
 form {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background: rgba(200, 200, 200, 0.1);
+  transition: all 0.4s ease-in-out;
 }
 
-input[type="text"] {
-  padding: 0.8rem;
-  width: 80%;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-.btn-group {
+.flex-group {
   display: flex;
-  gap: 0.5rem;
-  justify-content: center;
   flex-wrap: wrap;
+  gap: 1rem;
 }
 
-button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
+label {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+input, select, button {
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  width: 100%;
+  max-width: 300px;
 }
 
 button[type="submit"],
 #voice-btn {
-  background-color: #3399ff;
+  background: #0057ff;
   color: white;
+  cursor: pointer;
+  margin-top: 1rem;
+  border: none;
 }
 
-#theme-toggle {
+#toggle-advanced {
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: #0077cc;
+  cursor: pointer;
+  margin-top: 1rem;
+  text-decoration: underline;
+}
+
+/* Collapsible Animation */
+#advanced-fields {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+}
+#advanced-fields.expanded {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+/* Theme toggle switch */
+#theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 1.5rem;
-  background-color: #5555ff;
-  color: #fff;
+  gap: 10px;
 }
-
-button:hover {
-  filter: brightness(1.1);
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
 }
-
-/* === Star Cursor Trail === */
-.star {
-  position: fixed;
-  width: 6px;
-  height: 6px;
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px; width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
   border-radius: 50%;
-  background: white;
-  pointer-events: none;
-  box-shadow: 0 0 8px 2px #ffffffcc;
-  animation: fade 0.6s ease-out;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
-@keyframes fade {
-  from { opacity: 1; }
-  to { opacity: 0; transform: scale(1.5); }
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  margin-bottom: 1rem;
+}
+a {
+  color: #0077cc;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
 }
