@@ -2,56 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title> Enigma Explorer</title>
-  <link rel="stylesheet" href="/Enigma-Explorer/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enigma Explorer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="light">
+<body class="dark">
+  <div id="universe">
+    <!-- Star layers -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    <div class="nebula"></div>
+    <div class="shooting-star"></div>
+  </div>
 
-  <h1> Enigma Explorer</h1>
-  <p id="random-phrase"></p>
+  <!-- Main Content -->
+  <div class="container">
+    <h1>🔭 Enigma Explorer</h1>
+    <p id="random-phrase">Searching the stars...</p>
 
-  <form id="search-form">
-    <label>
-      Search: <input type="text" id="search-input" required>
-    </label>
+    <form id="search-form">
+      <input type="text" id="search-input" placeholder="Search the galaxy..." />
+      <button type="submit">Search</button>
+    </form>
 
-    <button type="button" id="toggle-advanced">Advanced Options ↓</button>
-
-    <div id="advanced-fields" class="collapsed">
-      <div class="flex-group">
-        <label>Country: <input type="text" id="gl" placeholder="us, bd, in..."></label>
-        <label>Time Period:
-          <select id="tbs">
-            <option value="">Any</option>
-            <option value="qdr:d">Past Day</option>
-            <option value="qdr:w">Past Week</option>
-            <option value="qdr:m">Past Month</option>
-            <option value="qdr:y">Past Year</option>
-          </select>
-        </label>
-      </div>
-      <label>Interface Language: <input type="text" id="hl" placeholder="en, bn..."></label>
-      <label>Search Language: <input type="text" id="lr"></label>
-      <label>Near (City): <input type="text" id="near"></label>
+    <button id="toggle-advanced">Advanced Options ↓</button>
+    <div id="advanced-fields">
+      <input type="text" id="gl" placeholder="Country (e.g., US)" />
+      <input type="text" id="hl" placeholder="Interface Language (e.g., en)" />
+      <input type="text" id="lr" placeholder="Search Language (e.g., lang_en)" />
+      <input type="text" id="near" placeholder="Near (City)" />
+      <input type="text" id="tbs" placeholder="Time Period (e.g., qdr:d)" />
     </div>
 
-    <button type="submit">Search</button>
-  </form>
-  <div id="theme-toggle-wrapper">
-    <span>&#9728;</span>
-    <label class="switch">
-      <input type="checkbox" id="theme-toggle">
-      <span class="slider round"></span>
-    </label>
-    <span>&#9790;</span>
-  </div>
- 
-    <p id="voice-status" class="privacy"></p>
-    <button id="theme-toggle">Toggle Light/Dark</button>
+    <div class="toggle-theme">
+      <label>
+        <input type="checkbox" id="theme-toggle" checked />
+        🌙 Theme
+      </label>
+    </div>
 
     <div id="results"></div>
+  </div>
 
-  <script src="https://samin-yasar.github.io/Enigma-Explorer/main.js"></script>
+  <!-- Audio -->
+  <audio id="space-sound" src="https://samin-yasar.github.io/assets/space-hover.mp3" preload="auto"></audio>
+
+  <script src="main.js"></script>
 </body>
 </html>
