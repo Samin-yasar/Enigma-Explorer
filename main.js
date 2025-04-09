@@ -1,9 +1,3 @@
-// 👇 Constructed the full backend URL with search params
-  const targetURL = `https://enigma-explorer.onrender.com/search?${params.toString()}`;
-
-  // 👇 Wrapped with CORS proxy
-  const proxyURL = `https://corsproxy.io/?url=${encodeURIComponent(targetURL)}`;
-
 // Search form submission
 document.getElementById("search-form").addEventListener("submit", function (e) {
   e.preventDefault();
@@ -18,11 +12,19 @@ function fetchWhoogleSearch(query) {
   const params = new URLSearchParams();
   params.append("q", query);
 
+  // Add optional fields
   ["gl", "tbs", "hl", "lr", "near"].forEach(id => {
     const value = document.getElementById(id)?.value.trim();
     if (value) params.append(id, value);
   });
 
+  // The target search URL (without proxy)
+  const targetURL = `https://enigma-explorer.onrender.com/search?${params.toString()}`;
+
+  // Wrapped with CORS proxy
+  const proxyURL = `https://corsproxy.io/?url=${encodeURIComponent(targetURL)}`;
+
+  // Fetch results using the proxy URL
   fetch(proxyURL)
     .then(res => res.text())
     .then(data => {
@@ -61,6 +63,7 @@ const phrases = [
   "Discover new galaxies of information.",
   "Search with confidence and security.",
   "Uncover the secrets of the cosmos."
+  "
 ];
 document.getElementById("random-phrase").textContent =
   phrases[Math.floor(Math.random() * phrases.length)];
