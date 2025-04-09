@@ -1,5 +1,4 @@
-
-const BACKEND_URL = "https://corsproxy.io/?https://enigma-explorer.onrender.com";
+const BACKEND_URL = "https://corsproxy.io/?url=https://enigma-explorer.onrender.com";
 
 // Search form submission
 document.getElementById("search-form").addEventListener("submit", function (e) {
@@ -15,8 +14,7 @@ function fetchWhoogleSearch(query) {
   const params = new URLSearchParams();
   params.append("q", query);
 
-  const optionalFields = ["gl", "tbs", "hl", "lr", "near"];
-  optionalFields.forEach(id => {
+  ["gl", "tbs", "hl", "lr", "near"].forEach(id => {
     const value = document.getElementById(id)?.value.trim();
     if (value) params.append(id, value);
   });
@@ -52,14 +50,15 @@ function fetchWhoogleSearch(query) {
     .catch(err => {
       resultsBox.innerHTML = `<p>⚠️ Error: ${err.message}</p>`;
     });
-  
+}
+
 // Advanced toggle
 document.getElementById("toggle-advanced").addEventListener("click", () => {
   const advanced = document.getElementById("advanced-fields");
   const toggle = document.getElementById("toggle-advanced");
   advanced.classList.toggle("expanded");
-  toggle.textContent = advanced.classList.contains("expanded") 
-    ? "Hide Advanced ↑" 
+  toggle.textContent = advanced.classList.contains("expanded")
+    ? "Hide Advanced ↑"
     : "Advanced Options ↓";
 });
 
@@ -68,58 +67,48 @@ const themeToggle = document.getElementById("theme-toggle");
 themeToggle.addEventListener("change", () => {
   const isDark = themeToggle.checked;
   document.body.classList.toggle("dark", isDark);
-  document.body.classList.toggle("light", !isDark);
   localStorage.setItem("theme", isDark ? "dark" : "light");
 });
 
-window.addEventListener("DOMContentLoaded", () => {
-  const saved = localStorage.getItem("theme");
-  if (saved) {
-    document.body.classList.add(saved);
-    themeToggle.checked = saved === "dark";
-  } else {
-    document.body.classList.add("light");
+// Random phrase
+const phrases = [
+  "Explore the universe of knowledge!",
+  "Your privacy is our priority.",
+  "Discover new galaxies of information.",
+  "Search with confidence and security.",
+  "Uncover the secrets of the cosmos."
+];
+document.getElementById("random-phrase").textContent =
+  phrases[Math.floor(Math.random() * phrases.length)];
 
-  // Random phrase
-  const phrases = [
-    "Explore the universe of knowledge!",
-    "Your privacy is our priority.",
-    "Discover new galaxies of information.",
-    "Search with confidence and security.",
-    "Uncover the secrets of the cosmos."
-  ];
-  const phraseElement = document.getElementById("random-phrase");
-  phraseElement.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+// 🌠 Star Cursor Trail
+const MAX_STARS = 50;
+let stars = [];
+
+document.addEventListener("mousemove", (e) => {
+  if (stars.length >= MAX_STARS) {
+    stars.shift().remove();
+  }
+
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.left = `${e.clientX}px`;
+  star.style.top = `${e.clientY}px`;
+  document.body.appendChild(star);
+  stars.push(star);
+
+  setTimeout(() => {
+    star.remove();
+  }, 600);
 });
 
-// Voice Search
-const voiceBtn = document.getElementById("voice-btn");
-const voiceStatus = document.getElementById("voice-status");
-const searchInput = document.getElementById("search-input");
-
-if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-
-  voiceBtn.addEventListener("click", () => {
-    recognition.start();
-    voiceStatus.textContent = "🎙️ Listening...";
-  });
-
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    searchInput.value = transcript;
-    voiceStatus.textContent = `✅ You said: "${transcript}"`;
-    document.getElementById("search-form").dispatchEvent(new Event("submit"));
-  };
-
-  recognition.onerror = () => {
-    voiceStatus.textContent = "❌ Voice search failed.";
-  };
-} 
-else {
-  voiceStatus.textContent = "⚠️ Voice search not supported on this browser.";
-  voiceBtn.disabled = true;
+// 🎧 Sound effect on star hover (optional)
+document.body.addEventListener("mouseover", (e) => {
+  if (e.target.classList.contains("star")) {
+    const audio = document.getElementById("space-sound");
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
   }
-}
+});
