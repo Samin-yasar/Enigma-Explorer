@@ -1,4 +1,8 @@
-const BACKEND_URL = "https://corsproxy.io/?url=https://enigma-explorer.onrender.com";
+// 👇 Constructed the full backend URL with search params
+  const targetURL = `https://enigma-explorer.onrender.com/search?${params.toString()}`;
+
+  // 👇 Wrapped with CORS proxy
+  const proxyURL = `https://corsproxy.io/?url=${encodeURIComponent(targetURL)}`;
 
 // Search form submission
 document.getElementById("search-form").addEventListener("submit", function (e) {
@@ -19,9 +23,7 @@ function fetchWhoogleSearch(query) {
     if (value) params.append(id, value);
   });
 
-  const url = `${BACKEND_URL}/search?${params.toString()}`;
-
-  fetch(url)
+  fetch(proxyURL)
     .then(res => res.text())
     .then(data => {
       const parser = new DOMParser();
