@@ -52,24 +52,6 @@ function fetchWhoogleSearch(query) {
     });
 }
 
-// Advanced toggle
-document.getElementById("toggle-advanced").addEventListener("click", () => {
-  const advanced = document.getElementById("advanced-fields");
-  const toggle = document.getElementById("toggle-advanced");
-  advanced.classList.toggle("expanded");
-  toggle.textContent = advanced.classList.contains("expanded")
-    ? "Hide Advanced ↑"
-    : "Advanced Options ↓";
-});
-
-// Theme toggle
-const themeToggle = document.getElementById("theme-toggle");
-themeToggle.addEventListener("change", () => {
-  const isDark = themeToggle.checked;
-  document.body.classList.toggle("dark", isDark);
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-});
-
 // Random phrase
 const phrases = [
   "Explore the universe of knowledge!",
