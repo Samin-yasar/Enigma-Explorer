@@ -62,8 +62,12 @@ const phrases = [
   "Your privacy is our priority.",
   "Discover new galaxies of information.",
   "Search with confidence and security.",
-  "Uncover the secrets of the cosmos."
-  "
+  "Uncover the secrets of the cosmos.",
+  "Explore the Web Without a Trace.",
+  "Discover More, Worry Less.",
+  "Search Without Compromise.",
+  "Find What You Need, Keep What You Want Private.",
+  "Your Queries, Your Privacy."
 ];
 document.getElementById("random-phrase").textContent =
   phrases[Math.floor(Math.random() * phrases.length)];
